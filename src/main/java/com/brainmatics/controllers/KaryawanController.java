@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -73,6 +74,36 @@ public class KaryawanController {
 			}
 			response.setStatus(false);
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		}
+	}
+	
+	@GetMapping(value="/{id}")
+	public ResponseEntity<?> findByid(@PathVariable("id") int id){
+		ResponseData response = new ResponseData();
+		try {
+			response.setPayload(karyawanService.findById(id));
+			response.setStatus(true);
+			response.getMessages().add("Load karyawan by Id: "+id);
+			return ResponseEntity.ok(response);
+		}catch(Exception ex) {
+			response.setStatus(false);
+			response.getMessages().add(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
+	}
+	
+	@PostMapping(value="/departemen")
+	public ResponseEntity<?> findByDepartemen(@PathVariable("id") int id, @PathVariable("page") int page){
+		ResponseData response = new ResponseData();
+		try {
+			response.setPayload(karyawanService.findByDepartemen(id, page));
+			response.setStatus(true);
+			response.getMessages().add("Load karyawan by DepartemenId: "+id);
+			return ResponseEntity.ok(response);
+		}catch(Exception ex) {
+			response.setStatus(false);
+			response.getMessages().add(ex.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 	}
 	

@@ -5,6 +5,8 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.brainmatics.models.entity.Karyawan;
@@ -42,7 +44,8 @@ public class KaryawanService {
 		return repo.findById(id).get();
 	}
 	
-	public List<Karyawan> findByDepartemen(int departemenId){
-		return repo.findByDepartemenId(departemenId);
+	public List<Karyawan> findByDepartemen(int departemenId, int page){
+		Pageable pageable = PageRequest.of(page, 2); //page start from 0
+		return repo.findByDepartemenId(departemenId, pageable);
 	}
 }
